@@ -101,7 +101,8 @@
     "sec:linux-auf-dem"
     "sec:linux-per-kickst"
     "sec:ssh-aufsetzen"
-    "sec:nfs-server-aufsetzen")
+    "sec:nfs-server-aufsetzen"
+    "sec:creation-users")
    (LaTeX-add-environments
     '("conditions" LaTeX-env-args ["argument"] 0))
    (LaTeX-add-lengths

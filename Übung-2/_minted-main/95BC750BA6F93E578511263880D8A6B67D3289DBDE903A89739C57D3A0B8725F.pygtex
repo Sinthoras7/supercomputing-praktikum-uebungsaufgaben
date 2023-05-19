@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo firewall\PYGZhy{}cmd \PYGZhy{}\PYGZhy{}permanent \PYGZhy{}\PYGZhy{}add\PYGZhy{}service=nfs
+sudo firewall\PYGZhy{}cmd \PYGZhy{}\PYGZhy{}permanent \PYGZhy{}\PYGZhy{}add\PYGZhy{}service=rpc\PYGZhy{}bind
+sudo firewall\PYGZhy{}cmd \PYGZhy{}\PYGZhy{}permanent \PYGZhy{}\PYGZhy{}add\PYGZhy{}service=mountd
+sudo firewall\PYGZhy{}cmd \PYGZhy{}\PYGZhy{}reload
+\end{Verbatim}

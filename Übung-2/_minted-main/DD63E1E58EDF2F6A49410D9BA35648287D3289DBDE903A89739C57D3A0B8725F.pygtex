@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+Host informatik\PYGZhy{}cs3
+     User oj06iloj
+     Hostname cs3\PYGZhy{}login.informatik.uni\PYGZhy{}erlangen.de
+     IdentityFile \PYGZti{}/xx/ssh\PYGZhy{}keys/cs3\PYGZhy{}login
+
+Host linux\PYGZhy{}aufgabe\PYGZhy{}n0
+     User root
+     Hostname pc\PYGZhy{}T4\PYGZhy{}N0
+     IdentityFile \PYGZti{}/xx/ssh\PYGZhy{}keys/sucopra\PYGZhy{}linux\PYGZhy{}aufgabe
+     ProxyJump informatik\PYGZhy{}cs3
+\end{Verbatim}

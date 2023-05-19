@@ -1,7 +1,7 @@
 \documentclass[a4paper,12pt,DIV=15, ngerman, parskip=half]{scrartcl}  % parskip=half or parskip=full
 %\usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
 
-\newcommand{\Author}{Leon Bernáth, Luisa Hübner, Jakob Heidweiler}
+\newcommand{\Author}{Leon Bernáth}
 \newcommand{\Title}{Supercomputing Praktikum: Übung 2}
 \newcommand{\Date}{\today}
 \newcommand{\Subtitle}{Setup-Exercise}
@@ -479,23 +479,27 @@
 
 \begin{itemize}
 \item Stick mit AlmaLinux eingesteckt
-\item Keyboard Layout konfiguriert
+\item Keyboard Layout konfiguriert (\(\implies\) deutsches Layout)
 \item Network + NetworkTime eingestellt
 \item Installation der Network Server version
 \item Additional Software: Legacy UNIX compatibility, security tools, Development tools, system tools
 \item Destination: automatic
-\item root Passwort gesetzt
-\item neugestartet
+\item root-Passwort gesetzt
+\item Daraufhin haben wir den PC neugestartet.
 \end{itemize}
 
 \subsection{Linux per Kickstarter auf dem zweiten PC}
 \label{sec:linux-per-kickst}
 
 \begin{itemize}
-\item Kickstarter file auf stick gezogen
-\item \mintinline{text}{repo --name="BaseOS" --baseurl=https://ftp.fau.de/almalinux/8.7/BaseOS/x86_64/os/}
-%\item \mintinline{text}{url --url="https://ftp.fau.de/almalinux/8.7/BaseOS/x86_64/os/"}
+\item Im Kickstarter-File \\
+  \mintinline{text}{repo --name="BaseOS" --baseurl=https://ftp.fau.de/almalinux/8.7/BaseOS/x86_64/os/}\\
+  und
+  \mintinline{text}{url --url="https://ftp.fau.de/almalinux/8.7/BaseOS/x86_64/os/"}
 ergänzt.
+\item Das auf einen USB gezogen, beide USBs eingesteckt und dann beim Start das Kickstart-File eingebunden durch das Drücken von Tab und den Befehl    \mintinline{text}{inst.ks=hd:LABEL=JMH2:/ks.cfg}.
+\item Daraufhin wurde alles richtig konfiguriert außer der Installation-Destination, die wir dann noch manuell eingeben mussten.
+\item Daraufhin haben wir den PC neugestartet.
 \end{itemize}
 
 
@@ -503,14 +507,73 @@ ergänzt.
 \label{sec:ssh-aufsetzen}
 
 \begin{itemize}
-\item private ssh keys in \mintinline{text}{authorized_keys} gelegt
-\item root password login disabled: in \mintinline{text}{/etc/ssh/sshd_config} haben wir \mintinline{text}{PasswordAuthentication} auf no gesetzt.
+\item Auf eigenen PC ssh-keys erstellt und dann die private ssh keys in \mintinline{text}{~/.ssh/authorized_keys} gesetzt.
+\item root password login deaktivieren: in \mintinline{text}{/etc/ssh/sshd_config} haben wir \mintinline{text}{PermitRootLogin} auf \mintinline{text}{prohibit-password} gesetzt.
+\item Dasselbe bei beiden Rechnern.
+\item Auf eigenem Gerät SSH config erstellt (für N1 analog):
+\begin{minted}{text}
+Host informatik-cs3
+     User oj06iloj
+     Hostname cs3-login.informatik.uni-erlangen.de
+     IdentityFile ~/xx/ssh-keys/cs3-login
+
+Host linux-aufgabe-n0
+     User root
+     Hostname pc-T4-N0
+     IdentityFile ~/xx/ssh-keys/sucopra-linux-aufgabe
+     ProxyJump informatik-cs3
+\end{minted}
 \end{itemize}
 
 
-\section{NFS server aufsetzen}
+
+
+\section{NFS Server aufsetzen}
 \label{sec:nfs-server-aufsetzen}
-Wir haben uns an den folgenden Guide gehalten: \url{https://techviewleo.com/install-and-configure-nfs-server-on-almalinux/}
+Wir haben uns größtenteils an den folgenden Guide gehalten: \url{https://techviewleo.com/install-and-configure-nfs-server-on-almalinux/}
+
+Also zuerst auf dem Server (bei uns T0) die folgenden Befehle ausgeführt:
+\begin{minted}{text}
+sudo dnf update -y
+sudo reboot
+sudo dnf -y install nfs-utils
+sudo systemctl start nfs-server.service
+sudo systemctl enable nfs-server.service
+\end{minted}
+
+Auf T0 den Ordner \mintinline{text}{/srv/exports/} erstellt.\\
+Dann in die Datei \mintinline{text}{/etc/exports} reingeschrieben:  \mintinline{text}{/srv/exports/  pc-t4-n1(sync,rw)}
+
+Danach exportiert mit dem Befehl \mintinline{text}{sudo exportfs -arv}.
+
+Firewall konfiguriert mit:
+\begin{minted}{text}
+sudo firewall-cmd --permanent --add-service=nfs
+sudo firewall-cmd --permanent --add-service=rpc-bind
+sudo firewall-cmd --permanent --add-service=mountd
+sudo firewall-cmd --reload
+\end{minted}
+und:
+\begin{minted}{text}
+sudo setsebool -P nfs_export_all_rw 1
+\end{minted}
+
+Wie in Step 6 dann T1 konfiguriert und in home/nfs gemountet, also: \mintinline{text}{sudo mount -t nfs pc-t4-n0:/srv/exports  /home/nfs}
+
+In der Datei \mintinline{text}{/etc/fstab} dann ergänzt: \mintinline{text}{pc-t4-n0:/srv/exports /home/nfs nfs defaults 0 0}
+
+Ein folgender Test hat ergeben, dass es funktioniert hat, also die Dateien synchronisiert werden.
+
+
+\section{Creation of the users}
+\label{sec:creation-users}
+
+Zuerst auf T0 mit dem Befehl (für die anderen Analog mit anderen UIDs) \mintinline{text}{sudo adduser leon -o -u 1003 -g 1002 -b /srv/exports -m -p BigPassword} neue User erstellt. Danach mit \mintinline{text}{passwd leon} ein neues Passwort gesetzt. \\
+Daraufhin T0 neugestartet.
+
+
+Daraufhin auf T1 ebenfalls User erstellt, die passende UIDs und Home-Directories haben, also beispielsweise: \mintinline{text}{sudo adduser leon -o -u 1003 -g 1002 -d /home/nfs/leon -m -p BigPassword} und analog zu T1 ein neues Passwort gesetzt.
+Daraufhin T1 neugestartet.
 
 
 

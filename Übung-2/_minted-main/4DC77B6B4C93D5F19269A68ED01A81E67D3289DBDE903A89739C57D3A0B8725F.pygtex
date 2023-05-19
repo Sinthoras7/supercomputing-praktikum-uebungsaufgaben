@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo dnf update \PYGZhy{}y
+sudo reboot
+sudo dnf \PYGZhy{}y install nfs\PYGZhy{}utils
+sudo systemctl start nfs\PYGZhy{}server.service
+sudo systemctl enable nfs\PYGZhy{}server.service
+\end{Verbatim}

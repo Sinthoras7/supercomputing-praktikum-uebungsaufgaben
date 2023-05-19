@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+sudo setsebool \PYGZhy{}P nfs\PYGZus{}export\PYGZus{}all\PYGZus{}rw 1
+\end{Verbatim}
