@@ -1,0 +1,559 @@
+\documentclass[a4paper,12pt,DIV=15, english, parskip=half]{scrartcl}  % parskip=half or parskip=full
+%\usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
+
+\newcommand{\Author}{Leon Bernáth}
+\newcommand{\Title}{Supercomputing Praktikum}
+\newcommand{\Date}{\today}
+\newcommand{\Subtitle}{Exercise 1}
+\newcommand{\meinemail}{\href{mailto:leon.bernath@posteo.de}{leon.bernath@posteo.de}}
+
+
+\usepackage{csquotes}
+\usepackage[english]{babel}
+
+
+%% The AMS-Packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+
+
+%% Different Fonts
+%\usepackage{libertine}
+%\usepackage{libertinust1math}
+
+
+\usepackage{ifluatex}
+\ifluatex%
+  % Lua(La)TeX
+  \usepackage{fontspec}
+  \defaultfontfeatures{Ligatures=TeX}
+  \usepackage[math-style=ISO, bold-style=ISO]{unicode-math}
+  %\unimathsetup{math-style=TeX}
+  %\setmathfont{NewCMMath-Book}
+  \setmathfont{Latin Modern Math}
+  \setmathfont{stix}[range={\setminus, \downzigzagarrow}]
+  \setmathfont{TeX Gyre Pagella Math}[range={"1D538-"1D56B, "02102, "0210D, "02115, "02119, "0211A, "0211D, "02124}] % The double stroke letters, e.g. for the complex, real, natural, whole numbers, or fields
+
+\else
+  %default: pdf(La)TeX
+  \usepackage{lmodern} % load vector font
+  \usepackage[T1]{fontenc} % font encoding
+  \usepackage[utf8]{inputenc} % input encoding
+\fi
+
+
+
+
+
+
+\usepackage{graphicx}
+%\graphicspath{{graphics/}}
+
+
+\usepackage{comment}
+\usepackage{wrapfig}
+\usepackage[dvipsnames,table,xcdraw]{xcolor}
+\usepackage{booktabs}
+
+
+\usepackage[stretch=10,shrink=10]{microtype}
+
+
+
+\usepackage{setspace}
+\usepackage[inline]{enumitem}
+\usepackage{multicol}
+\usepackage{import}
+
+
+\usepackage{siunitx}
+\sisetup{locale = DE, per-mode=fraction}
+
+%\usepackage{tikz}
+%\usepackage[straightvoltages]{circuitikz}
+%\usetikzlibrary{positioning,shapes.geometric}
+%\usetikzlibrary{angles,quotes}
+%\usetikzlibrary{intersections, calc}
+%\usetikzlibrary{external}
+%\tikzexternalize[prefix=tikz/]
+%\usepackage[framemethod=TikZ]{mdframed}
+
+%\usepackage{pgfplots}
+\usepackage{cancel}
+
+% Don't break enumeration (etc.) across pages in an ugly manner
+\clubpenalty=10000
+\widowpenalty=10000
+
+
+\usepackage[headsepline, footsepline, plainfootsepline]{scrlayer-scrpage}
+\pagestyle{scrheadings} %alternativ: \pagestyle{plain.scrheadings}
+\lohead{\headmark}
+\automark{section} %chapter
+\cohead{}
+\rohead{}
+
+\cfoot[\pagemark]{\pagemark}
+% Die optionalen Argumente liefern den Inhalt des Elements im pagestyle plain.scrheadings
+
+
+
+\author{\Author}
+\title{\Title}
+\date{\Date}
+%\subtitle{}
+
+
+%\setlength\parindent{0pt}
+%\onehalfspacing
+%\renewcommand{\thefigure}{\arabic{figure}}
+
+
+\newcommand{\RomanNumeralCaps}[1]{\MakeUppercase{\romannumeral#1}}
+
+
+\renewcommand{\labelitemi}{$\blacktriangleright$}
+
+
+%\usepackage[backend=biber,
+%style=numeric , %numeric,  authoryear, authoryear-ibid, authortitle, numeric-comp
+%%citestyle = numeric,
+%autocite=inline,
+%defernumbers=true,
+%useprefix=true,%
+%giveninits=true,%
+%hyperref=true,%
+%uniquename=init,%
+%sortcites=false,% sort citations when multiple entries are passed to one cite command
+%isbn=true, %ISBN nicht ausgeben
+%url=true,
+%eprint=false,
+%doi=false,
+%sorting=none]{biblatex}
+%
+%\addbibresource{references.bib}
+%\renewcommand*{\mkbibnamefamily}[1]{\textsc{#1}} %Namen in Kapitälchen
+%\renewcommand{\postnotedelim}{\addcolon\space} %Doppelpunkt und Abstand nach Name
+%
+% url breaks
+%\setcounter{biburllcpenalty}{7000}
+%\setcounter{biburlucpenalty}{8000}
+
+
+
+\usepackage{xpatch} %Remove points in numbering of theorems via amsthm
+\makeatletter
+\AtBeginDocument{\xpatchcmd{\@thm}{\thm@headpunct{.}}{\thm@headpunct{}}{}{}}
+\makeatother
+
+\usepackage[arrowdel]{physics}
+
+
+\usepackage{varwidth}
+
+%\setcounter{secnumdepth}{5}
+%\setcounter{tocdepth}{5}
+
+
+\newcommand{\konst}{\text{konst.}}
+
+\newcommand{\folglich}{\qquad\Rightarrow\qquad}
+\newcommand{\antiparallel}{\upharpoonleft\!\downharpoonright} % or \uparrow\downarrow
+
+
+
+\addtokomafont{labelinglabel}{\sffamily\bfseries}
+
+
+\usepackage{calc}
+\newlength{\conditionwd}
+\newenvironment{conditions}[1][Wobei:]  % where
+{%
+  #1\tabularx{\textwidth-\widthof{#1}}[t]{
+    >{$}l<{$} @{${}={}$} X@{}
+  }%
+}
+{\endtabularx\\[\belowdisplayskip]}
+
+
+
+\usepackage{slashed}
+%Reference: https://www.physicsforums.com/threads/latex-how-to-do-dirac-slash-notation.55561/
+
+
+
+\usepackage{pdfpages}
+
+
+
+\usepackage[]{faktor}
+
+%\usepackage[]{listings} % Codeblocks, thus not necessary with minted
+\usepackage[newfloat]{minted} % Nice looking colored Codeblocks
+\setminted{linenos, frame=lines, breaklines, fontsize=\small}
+
+
+\usepackage{transparent}
+% Is used by the pdf-export of Inkscape sometimes
+% only works with luatex says documentation
+
+
+
+
+\newcommand{\inkfig}[2][\columnwidth]{%
+    \def\svgwidth{#1}
+    \import{./figures/}{#2.pdf_tex}
+}
+
+
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks= true,
+  linkcolor={red!80!black},
+  citecolor={blue!50!black},
+  urlcolor={blue!80!black},
+  final=true,
+  plainpages=false,
+  pdfstartview=FitV,
+  pdftoolbar=true,
+  pdfmenubar=true,
+  pdfencoding=auto, % Allows symbols in toc and content oveview
+  psdextra, % same as above
+  bookmarksopen=true,
+  bookmarksnumbered=true,
+  pdfnewwindow=true,
+  breaklinks=true,
+  linktocpage=true
+}
+
+\hypersetup{pdfinfo={
+    pdftitle={\Title}, %,
+    pdfauthor={\Author}
+    %pdfsubject
+  }
+}
+
+\def\UrlBreaks{\do\/\do-}
+
+\usepackage[nameinlink]{cleveref}% http://ctan.org/pkg/cleveref
+
+\usepackage{tabularx}
+
+\usepackage[most]{tcolorbox}
+
+
+\newtcolorbox{kompakt}[1]{colback=green!5!white, colframe=green!75!black,fonttitle=\bfseries, title=#1, oversize}
+
+
+%\newtcolorbox{beispiel}[1]{title=#1, fonttitle=\bfseries, oversize}
+
+
+
+\tcbset{%
+  mytheoremstyle/.style={
+    enhanced, breakable, parbox=false,
+    before skip=2mm, after skip=2mm,
+    colback=white, colframe=blue!40!black,
+    boxrule=0.5mm, arc is angular,
+    attach boxed title to top left={xshift=1cm, yshift*=1mm-\tcboxedtitleheight},
+    varwidth boxed title*=-3cm,
+    boxed title style={frame code={
+        \path[fill=tcbcolback!30!black]
+        ([yshift=-1mm,xshift=-1mm]frame.north west)
+        arc[start angle=0,end angle=180,radius=1mm]
+        ([yshift=-1mm,xshift=1mm]frame.north east)
+        arc[start angle=180,end angle=0,radius=1mm];
+        \path[left color=tcbcolback!60!black, right color=tcbcolback!60!black,
+        middle color=tcbcolback!80!black]
+        ([xshift=-2mm]frame.north west) -- ([xshift=2mm]frame.north east)
+        [rounded corners=1mm]-- ([xshift=1mm,yshift=-1mm]frame.north east)
+        -- (frame.south east) -- (frame.south west)
+        -- ([xshift=-1mm,yshift=-1mm]frame.north west)
+        [sharp corners]-- cycle;
+      },
+      interior engine=empty},
+    colbacktitle=blue!40!black,
+    fonttitle=\bfseries,
+    % colback=blue!10!white
+    colback=white
+  },
+}
+
+\tcbset{%
+  def/.style={
+    breakable,enhanced, parbox=false,
+    left=5mm, theorem style=break,
+    before skip=4mm,after skip=4mm,
+    %   borderline = {0.3mm}{0pt}{gray},
+    coltitle=black, fonttitle=\bfseries,
+    colback=white,
+    arc=0pt,
+}}
+
+
+\newtcbtheorem[number within=section, list inside=thmlist, crefname={Theorem}{Theorems}]{theorem}{Theorem}{mytheoremstyle, separator sign={}, description delimiters parenthesis}{th}
+
+\newtcbtheorem[use counter from=theorem, list inside=thmlist, crefname={Lemma}{Lemmata}]{lemma}{Lemma}%
+{mytheoremstyle, separator sign={}, description delimiters parenthesis}{le}
+
+\newtcbtheorem[use counter from=theorem, list inside=thmlist, crefname={Corollary}{Corollaries}]{corollary}{Corollary}{mytheoremstyle, separator sign={}, description delimiters parenthesis}{cor}
+
+\newtcbtheorem[use counter from=theorem, list inside=thmlist, crefname={Proposition}{Propositions}]{proposition}{Proposition}{mytheoremstyle, separator sign={}, description delimiters parenthesis}{pro}
+
+\newtcbtheorem[use counter from=theorem, list inside=thmlist, crefname={Definition}{Definitions}]{definition}{Definition}{def, separator sign={}, description delimiters parenthesis}{def}
+
+\tcbset{%
+  rem/.style={
+    blanker,breakable,left=5mm, parbox=false,
+    before skip=10pt,after skip=10pt,
+    borderline west={1mm}{0pt}{gray},
+    coltitle=black, fonttitle=\bfseries,
+  }}
+
+\tcbset{%
+  examplestyle/.style={
+    blanker,breakable, left=5mm, parbox=false,
+    before skip=10pt,after skip=10pt,
+    borderline west={1mm}{0pt}{green!70!black},
+    coltitle=black, fonttitle=\bfseries,
+  }}
+
+
+\newtcbtheorem[use counter from=theorem, crefname={Remark}{Remarks}]{remark}{Remark}{rem, separator sign={}, description delimiters parenthesis}{rem}
+
+\newtcbtheorem[use counter from=theorem, crefname={Remarks}{Remarks}]{remarks}{Remarks}{rem, separator sign={}, description delimiters parenthesis}{rem}
+
+\newtcbtheorem[use counter from=theorem, crefname={Insertion}{Insertions}]{insertion}{Insertion}{rem, separator sign={}, description delimiters parenthesis}{ins}
+
+\newtcbtheorem[use counter from=theorem, list inside=thmlist, crefname={Example}{Examples}]{example}{Example}{examplestyle, separator sign={}, description delimiters parenthesis}{exa}
+
+
+\newtcolorbox{wichtig}[1]{mytheoremstyle, title=#1, colframe=green!40!black, colbacktitle=green!40!black}
+
+
+%\newenvironment{myproof}{\begin{proof}}{\end{proof}}
+
+\tcolorboxenvironment{proof}{% `proof' from `amsthm'
+  blanker,breakable,left=5mm,
+  before skip=10pt,after skip=10pt,
+  borderline west={1mm}{0pt}{green}}
+
+
+
+\newcommand{\vkappa}{\text{\usefont{U}{solomos}{m}{n}\symbol{'153}}}
+
+\usepackage{bm}
+% Some shortcuts
+\newcommand{\N}{\ensuremath{\mathbb{N}}}
+\newcommand{\R}{\ensuremath{\mathbb{R}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\renewcommand{\O}{\ensuremath{\emptyset}}
+\newcommand{\Q}{\ensuremath{\mathbb{Q}}}
+
+\newcommand{\C}{\ensuremath{\mathbb{C}}}
+\newcommand{\A}{\ensuremath{\mathcal{A}}}
+
+\renewcommand{\H}{\ensuremath{\mathcal{H}}}
+\newcommand{\D}{\ensuremath{\mathcal{D}}}
+
+\usepackage{bbm}
+\newcommand{\one}{\ensuremath{\mathbbm{1}}}
+%Hierzu gibt es noch eine Menge zu fixen, das hat mit Unicode-Math zu tun
+\renewcommand{\S}{\ensuremath{\mathcal{S}}}
+\newcommand{\ha}{\textasciicircum}
+
+
+\newcommand{\sr}{\ensuremath{\mathcal{S}(\R)}}
+\newcommand{\interior}[1]{\mathring{#1}}
+\newcommand{\conj}{^{*}}
+
+
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\spa}{span}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\cha}{char}
+\DeclareMathOperator{\Eig}{Eig}
+\DeclareMathOperator{\Bij}{Bij}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\graph}{graph}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\rg}{Rg}
+\DeclareMathOperator{\Grad}{grad} %anscheinend bereits definiert
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\supess}{supess}
+\DeclareMathOperator{\pr}{pr}
+
+
+
+\numberwithin{equation}{section}
+
+
+\newcommand{\mytitle}{
+  \thispagestyle{plain.scrheadings}
+  \textsf{
+    \centering
+    \hrule height 1.6pt depth 0pt width \textwidth
+    \vspace{2pt}
+    \hrule height 0.4pt depth 0pt width \textwidth
+    \bigskip
+    {\bfseries \LARGE \Title} \\ \vspace{0.3cm}
+    {\bfseries \Large \Subtitle} \\\vspace{10pt}
+    \hrule height 0.4pt depth 0pt width \textwidth
+    \vspace{2pt}
+    \hrule height 1.6pt depth 0pt width \textwidth
+    \vspace{\baselineskip} % Whitespace after the title block
+    \begin{large}
+      Compiled at \textbf{\Date} \\ \vspace{0.3cm}
+      from \textbf{\Author}\\
+      \meinemail \\
+    \end{large}
+    \vspace*{3\baselineskip}
+  }
+}
+
+
+
+
+\begin{document}
+
+\mytitle
+
+\section*{Task 1}
+
+The lecture stated that the theoretical peak floating-point performance of a modern CPU is: \begin{equation*}
+  \text{PCPU [Flop/s]} = n_{\text{cores}} ⋅ f_{\text{core}} \text{[GHz]} ⋅ n_{\text{ILP}} \text{[instr./cy]} ⋅ n_{\text{SIMD}} \text{[FP ops/instr.]}⋅ n_{\text{FMA}}
+\end{equation*}
+For node one has to multiply it by the number of CPUs in this node. In our case we consider one node, one core (\(n_{\text{cores}}=1\)), and \(f_{\text{core}}= 2,2\)GHz, \(n_{\text{ILP}}=2\), \(n_{\text{FMA}}=2\), \(n_{\text{SIMD}}= \frac{256}{64}=4\).
+
+We therefore get:
+\begin{equation*}
+  \text{PCPU [Flop/s]} = 35,2
+\end{equation*}
+
+\section*{Task 2}
+\label{sec:task-2}
+
+As stated in the documentation:
+\begin{equation*}
+\text{Memory-Usage}⋅\text{available Memory} = \frac{N^{2}}{PQ}⋅8
+\end{equation*}
+In our case we get:
+\begin{equation*}
+  N = \sqrt{\text{Memory-Usage} ⋅2^{32}}
+\end{equation*}
+Therefore we get for \(N\) in terms of memory-usage \(M\) the values:\\
+\begin{tabular}{lcccccccccc}
+  \toprule
+  \(M\) & 0.05 & 0.1 & 0.15 & 0.2 & 0.25 & 0.3 & 0.35 & 0.4 & 0.45 & 0.5\\
+  \(N\) & 14654 & 20724 & 25381 & 29308 & 32768 & 35895 & 38771 & 41448 & 43962 & 46340 \\
+\bottomrule
+\end{tabular}\\
+\begin{tabular}{lcccccccccc}
+  \toprule
+  \(M\) & 0.55 & 0.6 & 0.65 & 0.7 & 0.75 & 0.8 & 0.85 & 0.9 & 0.95 & 1 \\
+  \(N\) & 48602 & 50763 & 52836 & 54831 & 56755 & 58617 & 60421 & 62172 & 63876 & 65536 \\
+  \bottomrule
+\end{tabular}
+
+
+Making these divisible by the blocking factor yields:
+
+\begin{tabular}{lcccccccccc}
+  \toprule
+  \(M\) & 0.05 & 0.1 & 0.15 & 0.2 & 0.25 & 0.3 & 0.35 & 0.4 & 0.45 & 0.5\\
+  \(N\) & 14592 & 20736 & 25344 & 29376 & 32832 & 35904 & 38784 & 41472 & 43968 & 46272 \\
+\bottomrule
+\end{tabular}\\
+\begin{tabular}{lcccccccccc}
+  \toprule
+  \(M\) & 0.55 & 0.6 & 0.65 & 0.7 & 0.75 & 0.8 & 0.85 & 0.9 & 0.95 & 1 \\
+  \(N\) & 48576 & 50688 & 52800 & 54912 & 56832 & 58560 & 60480 & 62208 & 63936 & 65472
+ \\
+\bottomrule
+\end{tabular}
+
+\section*{Task 3 and 4}
+\label{sec:task-3-4}
+
+The results can be found in \cref{fig:aufgabe-3}
+
+\begin{figure}[h!]
+  \centering
+  \inkfig[0.9\linewidth]{Aufgabe_3}
+  \caption{The performance of one Meggie socket for different problem sizes $N$ }
+  \label{fig:aufgabe-3}
+\end{figure}
+
+As we can see, 95\% of the theoretical peak floating-point performance is archieved by a memory usage of \(0.95\), thus \(95\%\) of total memory per NUMA node which in our case is approximately 30,4 GB. % TODO Unsure whether this is right
+
+\section*{Task 5}
+\label{sec:task-5}
+
+The results can be found in \cref{fig:aufgabe-5}.
+
+\begin{figure}[h!]
+  \centering
+  \inkfig[0.9\linewidth]{Aufgabe_5}
+  \caption{The performance of one Meggie socket for different blocking factors $N_B$}
+  \label{fig:aufgabe-5}
+\end{figure}
+
+As expected, the given blocking factor of 192 has the best performance.
+
+
+
+
+\section*{Task 6}
+\label{sec:task-6}
+
+For 2 cores I tried to use 95\% of the total memory. Somehow this did not work, and Jakob told me to use \(N=14400\) arbitrarily. So I used this for 1 and 2 cores. The result is shown in \cref{fig:aufgabe-6}.
+
+
+\begin{figure}[h!]
+  \centering
+  \inkfig{Aufgabe_6}
+  \caption{The performance for different numbers of cores}
+  \label{fig:aufgabe-6}
+\end{figure}
+
+As expected the performance in terms of the number of nodes is approximately linear. The stronger deviations for one and two cores can be explained by the diferent problem size \(N\).
+
+
+
+\section*{The Code}
+\label{sec:code}
+
+
+
+The code, which I used to solve the exercise can be found at: \url{https://github.com/Sinthoras7/supercomputing-praktikum-uebungsaufgaben}.
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+%%% Local Variables:
+%%% TeX-command-extra-options: "-shell-escape"
+%%% TeX-master: t
+%%% End:

@@ -1,0 +1,86 @@
+* Aufgabe 3:
+Was ich getan habe:
+
+** 1. In meiner =~/.ssh/config= steht folgendes:
+#+begin_src
+Host sucopra-meggie
+     User scvl103h
+     Hostname meggie.rrze.fau.de
+     IdentityFile ~/Sync/Uni/einzelneSemester/6-semester-fau/Super-Computing-Praktikum/hpc-account-2023-04-11
+#+end_src
+
+** 2. Files des Packungsprogramms von Intel auf den Server kopiert mithilfe des Befehls:
+#+begin_src shell
+scp -r /home/leonb/Sync/Uni/einzelneSemester/6-semester-fau/Super-Computing-Praktikum/benchmarks_2022.0.2/ sucopra-meggie:~
+#+end_src
+
+Dann in den richtigen Ordner gegangen:
+#+begin_src
+cd benchmarks_2022.0.2/linux/mkl/benchmarks/mp_linpack/
+#+end_src
+
+** 3. Die Datei HPL.dat darin auf folgenden Inhalt verändert:
+#+begin_src
+HPLinpack benchmark input file
+Innovative Computing Laboratory, University of Tennessee
+HPL-aufgabe-3.out      output file name (if any)
+file            device out (6=stdout,7=stderr,file)
+20            # of problems sizes (N)
+14592 20736 25344 29376 32832 35904 38784 41472 43968 46272 48576 50688 52800 54912 56832 58560 60480 62208 63936 65472    # Ns
+1            # of NBs
+192          NBs
+1            PMAP process mapping (0=Row-,1=Column-major)
+1            # of process grids (P x Q)
+1            Ps
+1            Qs
+16.0         threshold
+1            # of panel fact
+2 1 0        PFACTs (0=left, 1=Crout, 2=Right)
+1            # of recursive stopping criterium
+2            NBMINs (>= 1)
+1            # of panels in recursion
+2            NDIVs
+1            # of recursive panel fact.
+1 0 2        RFACTs (0=left, 1=Crout, 2=Right)
+1            # of broadcast
+0            BCASTs (0=1rg,1=1rM,2=2rg,3=2rM,4=Lng,5=LnM)
+1            # of lookahead depth
+0            DEPTHs (>=0)
+0            SWAP (0=bin-exch,1=long,2=mix)
+1            swapping threshold
+1            L1 in (0=transposed,1=no-transposed) form
+1            U  in (0=transposed,1=no-transposed) form
+0            Equilibration (0=no,1=yes)
+8            memory alignment in double (> 0)
+#+end_src
+
+** Die Datei job-file.sh erstellt mit folgendem Inhalt:
+#+begin_src
+#!/bin/bash -l
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBAZCH --cpus-per-task=10
+#SBATCH --time=04:00:00
+#SBATCH --cpu-freq=2200000
+#SBATCH --mail-user=leon.bernath@fau.de
+#SBATCH --mail-type=ALL
+
+unset SLURM_EXPORT_ENV
+module load intel
+module load intelmpi
+module load mkl
+./runme_intel64_dynamic
+#+end_src
+
+** In der ~runme_intel64_dynamic~ hab ich ~MPI_PER_NODE=1~ gesetzt und ~MPI_PROC_NUM=1~ auch
+
+** Slurm angesprochen, dass Server rechnet mit:
+#+begin_src shell
+sbatch job-file.sh
+#+end_src
+
+* Aufgabe 6
+Für N Nodes:
+** In der Datei ~runme_intel64_dynamic~ setzen: ~MPI_PER_NODE=2~  ~MPI_PROC_NUM=2*N~
+** In der Datei ~job-file.sh~ setzen: ~nodes=n~
+** In der Datei ~HPL.dat~ setzen: ~Qs~ auf ~N~ und ~output file name~ auf die richtige core anzahl und Problem size auf das passende
